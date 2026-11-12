@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo Multimarca | LubriRepuestos Automotriz F&P FajaPar</title>
+  <style>
+    :root {
+      --yellow: #ffd100;
+      --yellow-dark: #e6bc00;
+      --black: #0f0f10;
+      --dark-panel: #1a1b1e;
+      --card: #1f2024;
+      --border: #32343b;
+      --text: #f5f5f7;
+      --muted: #a1a5b0;
+      --green: #25d366;
+      --blue: #2b7fff;
+      --red: #ff4757;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--black); color: var(--text); line-height: 1.5; padding-bottom: 40px; }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #18181b 0%, #09090a 100%);
+      border-bottom: 4px solid var(--yellow);
+      padding: 22px 16px;
+      text-align: center;
+    }
+    .brand-badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: #000;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    header h1 {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+    header p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .container { max-width: 1050px; margin: 0 auto; padding: 0 16px; }
+
+    /* Sección 1: Selección de Marca */
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 22px 0 12px;
+    }
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+      gap: 10px;
+    }
+    .brand-card {
+      background: linear-gradient(145deg, #23252a, #17181b);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-card:hover { border-color: var(--yellow); transform: translateY(-2px); }
+    .brand-card.active {
+      background: linear-gradient(145deg, #2d2914, #1b190d);
+      border-color: var(--yellow);
+      box-shadow: 0 0 14px rgba(255, 209, 0, 0.25);
+    }
+    .brand-card .b-name {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--yellow);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .brand-card .b-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Sección 2: Buscador Estilo Giti */
+    .guide-btn {
+      display: block;
+      width: 100%;
+      background: var(--yellow);
+      color: #000;
+      font-weight: 900;
+      font-size: 0.92rem;
+      text-align: center;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 22px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .guide-box {
+      display: none;
+      background: #1c1d21;
+      border: 1px solid var(--yellow);
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #e2e4ea;
+    }
+    .guide-box.show { display: block; }
+
+    .search-panel {
+      background: #222326;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+    }
+    .search-step {
+      padding: 14px 16px;
+      border-bottom: 1px solid #33353b;
+    }
+    .search-step:last-child { border-bottom: none; }
+    .search-step label {
+      display: block;
+      font-size: 0.8rem;
+      color: #b4b8c2;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .search-step select {
+      width: 100%;
+      background: transparent;
+      color: #fff;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }
+    .search-step select option {
+      background: #1a1b1e;
+      color: #fff;
+    }
+    .reset-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .reset-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--yellow);
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    /* Resultados y Tarjetas de Llantas */
+    .tires-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .tire-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .tire-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .tire-brand-pill {
+      background: rgba(255, 209, 0, 0.16);
+      color: var(--yellow);
+      font-weight: 900;
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .discount-badge {
+      background: var(--red);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.78rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .tire-model {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 2px;
+    }
+    .tire-size {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--yellow);
+      margin: 4px 0 10px;
+    }
+    .price-box {
+      background: #141518;
+      border: 1px solid #2b2d34;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .old-price {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+    .final-price {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1.2;
+    }
+    .iva-tag {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: #d1fae5;
+      background: rgba(37, 211, 102, 0.15);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: var(--green);
+      color: #06210f;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 0.92rem;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    /* Botones exclusivos de Administrador (OCULTOS por defecto) */
+    .admin-only { display: none !important; }
+    body.admin-unlocked .admin-only { display: block !important; }
+    body.admin-unlocked .admin-bar { display: flex !important; }
+
+    .admin-bar {
+      display: none;
+      background: #1b2234;
+      border-bottom: 2px solid var(--blue);
+      padding: 10px 16px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .admin-bar span {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #93c5fd;
+    }
+    .admin-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-add {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .btn-export {
+      background: var(--yellow);
+      color: #000;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-weight: 900;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .btn-lock {
+      background: #33363f;
+      color: #fff;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .card-edit-btn {
+      width: 100%;
+      margin-top: 8px;
+      background: #2b3347;
+      color: #93c5fd;
+      border: 1px solid #3d4b6e;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    /* Modales */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #1e2025;
+      border: 2px solid var(--yellow);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h3 { color: var(--yellow); margin-bottom: 12px; font-size: 1.15rem; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; font-weight: 700; }
+    .form-group input {
+      width: 100%;
+      background: #121316;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .modal-btns { display: flex; gap: 8px; margin-top: 16px; }
+    .modal-btns button { flex: 1; padding: 11px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+    .btn-save { background: var(--green); color: #05200e; }
+    .btn-cancel { background: #32353e; color: #fff; }
+    .btn-del { background: var(--red); color: #fff; margin-top: 8px; width: 100%; padding: 9px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      border-top: 3px solid var(--yellow);
+      background: #141518;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    footer h2 { color: var(--yellow); font-size: 1.2rem; margin-bottom: 6px; }
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; }
+    .footer-links a {
+      background: #23252b;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .secret-trigger {
+      margin-top: 18px;
+      font-size: 0.75rem;
+      color: #4b4e57;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra de Administrador (Invisible para clientes) -->
+  <div class="admin-bar" id="adminBar">
+    <span>🔓 MODO DUEÑO ACTIVO</span>
+    <div class="admin-actions">
+      <button class="btn-add" onclick="openAddModal()">+ Nueva Llanta</button>
+      <button class="btn-export" onclick="downloadUpdatedFile()">💾 Guardar Archivo Actualizado</button>
+      <button class="btn-lock" onclick="lockAdmin()">🔒 Salir</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="brand-badge">CATÁLOGO MULTIMARCA • ECUADOR</div>
+    <h1>LubriRepuestos Automotriz F&amp;P FajaPar</h1>
+    <p>Selecciona tu marca o busca la medida exacta para tu vehículo</p>
+  </header>
+
+  <div class="container">
+    <!-- Cuadrícula de Marcas -->
+    <div class="section-title">1. Selecciona tu marca</div>
+    <div class="brands-grid" id="brandsGrid"></div>
+
+    <!-- Guía desplegable estilo Giti -->
+    <button class="guide-btn" onclick="toggleGuide()">¿CÓMO SE LEE UN NEUMÁTICO? ▾</button>
+    <div class="guide-box" id="guideBox">
+      <strong>Ejemplo: 265 / 70 R16</strong><br><br>
+      • <strong>01. Ancho de sección (265):</strong> Es el ancho de la llanta en milímetros.<br>
+      • <strong>02. Relación de aspecto (70):</strong> Es la altura del perfil expresada como porcentaje del ancho.<br>
+      • <strong>03. Tamaño de llanta / Rin (R16):</strong> Es el diámetro interno del aro en pulgadas.
+    </div>
+
+    <!-- Buscador en 3 pasos -->
+    <div class="section-title">2. Busca por medida</div>
+    <div class="search-panel">
+      <div class="search-step">
+        <label for="selWidth">01. Ancho de sección</label>
+        <select id="selWidth" onchange="applyFilters()">
+          <option value="">Seleccionar</option>
+        </select>
+      </div>
+      <div class="search-step">
+        <label for="selAspect">02. Relación de aspecto</label>
+        <select id="selAspect" onchange="applyFilters()">
+          <option value="">Seleccionar</option>
+        </select>
+      </div>
+      <div class="search-step">
+        <label for="selRim">03. Tamaño de llanta</label>
+        <select id="selRim" onchange="applyFilters()">
+          <option value="">Seleccionar</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="reset-row">
+      <span id="resultsCount">Cargando neumáticos...</span>
+      <button class="reset-btn" onclick="resetFilters()">Limpiar filtros</button>
+    </div>
+
+    <!-- Listado de Llantas -->
+    <div class="tires-grid" id="tiresGrid"></div>
+  </div>
+
+  <footer>
+    <h2>LubriRepuestos Automotriz F&amp;P FajaPar</h2>
+    <p style="color: #a1a5b0; font-size: 0.88rem;">Precios incluyen IVA • Consulta disponibilidad y promociones</p>
+    <div class="footer-links">
+      <a href="https://wa.me/593983775551" target="_blank">📱 WhatsApp: 0983775551</a>
+      <a href="mailto:fajapar.automotriz.ec@gmail.com">✉️ fajapar.automotriz.ec@gmail.com</a>
+    </div>
+    <!-- Acceso discreto para el dueño -->
+    <div class="secret-trigger" onclick="openPinModal()">© LubriRepuestos Automotriz F&amp;P FajaPar • Admin</div>
+  </footer>
+
+  <!-- Modal PIN Administrador -->
+  <div class="modal-backdrop" id="pinModal">
+    <div class="modal">
+      <h3>Acceso Administrador</h3>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:12px;">Ingresa tu clave de dueño para editar marcas, precios y descuentos (Clave inicial: <strong>5551</strong>).</p>
+      <div class="form-group">
+        <label>Clave de acceso</label>
+        <input type="password" id="pinInput" placeholder="••••" inputmode="numeric" />
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closePinModal()">Cancelar</button>
+        <button class="btn-save" onclick="verifyPin()">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar / Agregar Llanta -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal">
+      <h3 id="modalTitle">Editar Neumático</h3>
+      <input type="hidden" id="editIndex" />
+      <div class="form-group">
+        <label>Marca (ej. DUNLOP, GITI, MICHELIN)</label>
+        <input type="text" id="fBrand" placeholder="DUNLOP" />
+      </div>
+      <div class="form-group">
+        <label>Modelo de llanta (ej. Grandtrek AT5)</label>
+        <input type="text" id="fModel" placeholder="Grandtrek AT5" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>01. Ancho</label>
+          <input type="text" id="fWidth" placeholder="265" />
+        </div>
+        <div class="form-group">
+          <label>02. Perfil</label>
+          <input type="text" id="fAspect" placeholder="70" />
+        </div>
+        <div class="form-group">
+          <label>03. Rin</label>
+          <input type="text" id="fRim" placeholder="R16" />
+        </div>
+      </div>
+      <div class="form-row" style="grid-template-columns: 1fr 1fr;">
+        <div class="form-group">
+          <label>Precio con IVA ($)</label>
+          <input type="number" step="0.01" id="fPrice" placeholder="185.00" />
+        </div>
+        <div class="form-group">
+          <label>Descuento (%)</label>
+          <input type="number" step="1" min="0" max="90" id="fDiscount" placeholder="10" />
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+        <button class="btn-save" onclick="saveTire()">Guardar</button>
+      </div>
+      <button class="btn-del" id="btnDeleteTire" onclick="deleteTire()">Eliminar esta llanta</button>
+    </div>
+  </div>
+
+  <script id="catalog-data-script">
+    const ADMIN_PIN = "5551";
+    const WHATSAPP_NUMBER = "593983775551";
+
+    // Datos iniciales del catálogo
+    let initialTires = [
+      { brand: "DUNLOP", model: "Grandtrek AT5", width: "265", aspect: "70", rim: "R16", price: 185.00, discount: 10 },
+      { brand: "DUNLOP", model: "Grandtrek AT5", width: "265", aspect: "65", rim: "R17", price: 195.00, discount: 0 },
+      { brand: "DUNLOP", model: "Direzza DZ102", width: "205", aspect: "55", rim: "R16", price: 138.00, discount: 5 },
+      { brand: "DUNLOP", model: "Grandtrek R/T", width: "265", aspect: "75", rim: "R16", price: 215.00, discount: 0 },
+      { brand: "GITI", model: "GitiControl P80", width: "205", aspect: "55", rim: "R16", price: 112.00, discount: 8 },
+      { brand: "GITI", model: "Giti4x4 AT70", width: "265", aspect: "70", rim: "R16", price: 158.00, discount: 10 },
+      { brand: "MICHELIN", model: "Primacy 4+", width: "205", aspect: "55", rim: "R16", price: 165.00, discount: 0 },
+      { brand: "MICHELIN", model: "LTX Force", width: "265", aspect: "65", rim: "R17", price: 225.00, discount: 5 },
+      { brand: "GOODYEAR", model: "Wrangler All-Terrain", width: "265", aspect: "70", rim: "R16", price: 179.00, discount: 12 },
+      { brand: "HANKOOK", model: "Dynapro AT2", width: "265", aspect: "65", rim: "R17", price: 172.00, discount: 0 }
+    ];
+  </script>
+
+  <script>
+    const STORAGE_KEY = "fajapar_tires_v4";
+    let tires = JSON.parse(localStorage.getItem(STORAGE_KEY)) || initialTires;
+    let selectedBrand = "ALL";
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tires));
+    }
+
+    function toggleGuide() {
+      document.getElementById("guideBox").classList.toggle("show");
+    }
+
+    function renderBrands() {
+      const grid = document.getElementById("brandsGrid");
+      const brandCounts = {};
+      tires.forEach(t => {
+        const b = t.brand.trim().toUpperCase();
+        brandCounts[b] = (brandCounts[b] || 0) + 1;
+      });
+
+      let html = `
+        <div class="brand-card ${selectedBrand === 'ALL' ? 'active' : ''}" onclick="selectBrand('ALL')">
+          <div class="b-name">TODAS</div>
+          <div class="b-count">${tires.length} medidas</div>
+        </div>
+      `;
+
+      Object.keys(brandCounts).sort().forEach(brand => {
+        html += `
+          <div class="brand-card ${selectedBrand === brand ? 'active' : ''}" onclick="selectBrand('${brand}')">
+            <div class="b-name">${brand}</div>
+            <div class="b-count">${brandCounts[brand]} medida(s)</div>
+          </div>
+        `;
+      });
+      grid.innerHTML = html;
+    }
+
+    function selectBrand(brand) {
+      selectedBrand = brand;
+      renderBrands();
+      applyFilters();
+    }
+
+    function populateDropdowns() {
+      const widths = [...new Set(tires.map(t => t.width.trim()))].sort((a,b) => Number(a) - Number(b));
+      const aspects = [...new Set(tires.map(t => t.aspect.trim()))].sort((a,b) => Number(a) - Number(b));
+      const rims = [...new Set(tires.map(t => t.rim.trim().toUpperCase()))].sort();
+
+      fillSelect("selWidth", widths);
+      fillSelect("selAspect", aspects);
+      fillSelect("selRim", rims);
+    }
+
+    function fillSelect(id, items) {
+      const sel = document.getElementById(id);
+      const current = sel.value;
+      sel.innerHTML = `<option value="">Seleccionar</option>` + items.map(v => `<option value="${v}">${v}</option>`).join("");
+      if (items.includes(current)) sel.value = current;
+    }
+
+    function resetFilters() {
+      selectedBrand = "ALL";
+      document.getElementById("selWidth").value = "";
+      document.getElementById("selAspect").value = "";
+      document.getElementById("selRim").value = "";
+      renderBrands();
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const w = document.getElementById("selWidth").value;
+      const a = document.getElementById("selAspect").value;
+      const r = document.getElementById("selRim").value;
+
+      const filtered = tires.map((t, idx) => ({ ...t, _idx: idx })).filter(t => {
+        const matchB = selectedBrand === "ALL" || t.brand.trim().toUpperCase() === selectedBrand;
+        const matchW = !w || t.width.trim() === w;
+        const matchA = !a || t.aspect.trim() === a;
+        const matchR = !r || t.rim.trim().toUpperCase() === r;
+        return matchB && matchW && matchA && matchR;
+      });
+
+      document.getElementById("resultsCount").textContent = `Mostrando ${filtered.length} neumático(s) disponible(s)`;
+      const grid = document.getElementById("tiresGrid");
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; background:#1a1b1e; border-radius:10px; border:1px dashed #32343b;">
+          <p style="margin-bottom:12px; color:#a1a5b0;">No hay resultados con esa combinación exacta.</p>
+          <a class="wa-btn" style="max-width:260px; margin:0 auto;" target="_blank" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola LubriRepuestos Automotriz F&P FajaPar, busco una llanta medida ' + w + '/' + a + ' ' + r)}">💬 Consultar disponibilidad</a>
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(t => {
+        const basePrice = Number(t.price) || 0;
+        const disc = Number(t.discount) || 0;
+        const finalPrice = disc > 0 ? basePrice * (1 - disc / 100) : basePrice;
+        const sizeLabel = `${t.width}/${t.aspect} ${t.rim.toUpperCase()}`;
+
+        const waMsg = `Hola LubriRepuestos Automotriz F&P FajaPar, me interesa la llanta ${t.brand.toUpperCase()} ${t.model} medida ${sizeLabel} ($${finalPrice.toFixed(2)} IVA incluido).`;
+        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+
+        return `
+          <div class="tire-card">
+            <div>
+              <div class="tire-header">
+                <span class="tire-brand-pill">${t.brand}</span>
+                ${disc > 0 ? `<span class="discount-badge">-${disc}% DESC</span>` : ''}
+              </div>
+              <div class="tire-model">${t.model}</div>
+              <div class="tire-size">${sizeLabel}</div>
+              <div class="price-box">
+                ${disc > 0 ? `<div class="old-price">Antes: $${basePrice.toFixed(2)}</div>` : ''}
+                <div class="final-price">$${finalPrice.toFixed(2)}</div>
+                <span class="iva-tag">✓ INCLUYE IVA</span>
+              </div>
+            </div>
+            <div>
+              <a class="wa-btn" href="${waUrl}" target="_blank">💬 Cotizar por WhatsApp</a>
+              <button class="card-edit-btn admin-only" onclick="openEditModal(${t._idx})">✏️ Editar Marca / Precio / Desc.</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* Seguridad Modo Administrador */
+    function openPinModal() {
+      if (document.body.classList.contains("admin-unlocked")) return;
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinModal").classList.add("open");
+    }
+    function closePinModal() {
+      document.getElementById("pinModal").classList.remove("open");
+    }
+    function verifyPin() {
+      const val = document.getElementById("pinInput").value.trim();
+      if (val === ADMIN_PIN) {
+        document.body.classList.add("admin-unlocked");
+        closePinModal();
+      } else {
+        alert("Clave incorrecta");
+      }
+    }
+    function lockAdmin() {
+      document.body.classList.remove("admin-unlocked");
+    }
+
+    /* Editar / Agregar */
+    function openAddModal() {
+      document.getElementById("modalTitle").textContent = "Agregar Nueva Llanta / Marca";
+      document.getElementById("editIndex").value = "-1";
+      document.getElementById("fBrand").value = "";
+      document.getElementById("fModel").value = "";
+      document.getElementById("fWidth").value = "";
+      document.getElementById("fAspect").value = "";
+      document.getElementById("fRim").value = "";
+      document.getElementById("fPrice").value = "";
+      document.getElementById("fDiscount").value = "0";
+      document.getElementById("btnDeleteTire").style.display = "none";
+      document.getElementById("editModal").classList.add("open");
+    }
+
+    function openEditModal(idx) {
+      const t = tires[idx];
+      document.getElementById("modalTitle").textContent = "Editar Llanta";
+      document.getElementById("editIndex").value = idx;
+      document.getElementById("fBrand").value = t.brand;
+      document.getElementById("fModel").value = t.model;
+      document.getElementById("fWidth").value = t.width;
+      document.getElementById("fAspect").value = t.aspect;
+      document.getElementById("fRim").value = t.rim;
+      document.getElementById("fPrice").value = t.price;
+      document.getElementById("fDiscount").value = t.discount || 0;
+      document.getElementById("btnDeleteTire").style.display = "block";
+      document.getElementById("editModal").classList.add("open");
+    }
+
+    function closeEditModal() {
+      document.getElementById("editModal").classList.remove("open");
+    }
+
+    function saveTire() {
+      const idx = Number(document.getElementById("editIndex").value);
+      const brand = document.getElementById("fBrand").value.trim().toUpperCase();
+      const model = document.getElementById("fModel").value.trim();
+      const width = document.getElementById("fWidth").value.trim();
+      const aspect = document.getElementById("fAspect").value.trim();
+      let rim = document.getElementById("fRim").value.trim().toUpperCase();
+      if (rim && !rim.startsWith("R")) rim = "R" + rim;
+      const price = parseFloat(document.getElementById("fPrice").value) || 0;
+      const discount = parseFloat(document.getElementById("fDiscount").value) || 0;
+
+      if (!brand || !model || !width || !aspect || !rim) {
+        alert("Por favor completa marca, modelo y las 3 medidas.");
+        return;
+      }
+
+      const item = { brand, model, width, aspect, rim, price, discount };
+      if (idx === -1) {
+        tires.unshift(item);
+      } else {
+        tires[idx] = item;
+      }
+
+      saveToStorage();
+      closeEditModal();
+      renderBrands();
+      populateDropdowns();
+      applyFilters();
+    }
+
+    function deleteTire() {
+      const idx = Number(document.getElementById("editIndex").value);
+      if (idx >= 0 && confirm("¿Eliminar esta llanta del catálogo?")) {
+        tires.splice(idx, 1);
+        saveToStorage();
+        closeEditModal();
+        renderBrands();
+        populateDropdowns();
+        applyFilters();
+      }
+    }
+
+    /* Exportar HTML con los precios actualizados para subir a Tiiny Host */
+    function downloadUpdatedFile() {
+      const docClone = document.documentElement.cloneNode(true);
+      docClone.querySelector("body").classList.remove("admin-unlocked");
+      const dataScript = docClone.querySelector("#catalog-data-script");
+      dataScript.textContent = `
+    const ADMIN_PIN = "5551";
+    const WHATSAPP_NUMBER = "593983775551";
+    let initialTires = ${JSON.stringify(tires, null, 2)};
+      `;
+      const fullHtml = "<!DOCTYPE html>\n" + docClone.outerHTML;
+      const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "catalogo-multimarca-fajapar-actualizado.html";
+      a.click();
+    }
+
+    // Inicializar
+    renderBrands();
+    populateDropdowns();
+    applyFilters();
+  </script>
+</body>
+</html>
